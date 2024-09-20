@@ -5,6 +5,7 @@ const PORT = 3000;
 const server = createServer((req, res) => {
   console.log({ method: req.method, url: req.url });
   const { method, url } = req;
+  res.setHeader("Content-Type", "application/json");
 
   res.statusCode = 200;
   res.end("Server is running");
