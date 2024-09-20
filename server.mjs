@@ -65,6 +65,9 @@ const server = createServer((req, res) => {
       JSON.stringify({ message: `DELETE request - Deleting item ${itemId}` })
     );
     return; // Prevent further execution
+  } else {
+    res.statusCode = 404;
+    res.end(JSON.stringify({ message: "Route not found" }));
   }
 });
 
