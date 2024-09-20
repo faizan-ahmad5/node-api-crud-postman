@@ -8,15 +8,28 @@ const server = createServer((req, res) => {
   res.setHeader("Content-Type", "application/json");
   const parsedUrl = new URL(url, `http://${req.headers.host}`);
 
-  // GET request
+  // Root route
+  if (method === "GET" && parsedUrl.pathname === "/") {
+    res.statusCode = 200;
+    res.end(JSON.stringify({ message: "Welcome to the Home Page" }));
+    return;
+  }
+
+  // About route
+  if (method === "GET" && parsedUrl.pathname === "/about") {
+    res.statusCode = 200;
+    res.end(JSON.stringify({ message: "About Page" }));
+    return;
+  }
+
+  // GET request for items
   if (method === "GET" && parsedUrl.pathname === "/api/items") {
     res.statusCode = 200;
     res.end(JSON.stringify({ message: "GET request - Fetching all items" }));
-    return; // Prevent further execution
+    return;
   }
-
-  // POST request
-  else if (method === "POST" && parsedUrl.pathname === "/api/items") {
+  // POST request for items
+  if (method === "POST" && parsedUrl.pathname === "/api/items") {
     let body = "";
     req.on("data", (chunk) => {
       body += chunk.toString();
@@ -31,11 +44,11 @@ const server = createServer((req, res) => {
         })
       );
     });
-    return; // Prevent further execution
+    return;
   }
 
-  //   PUT Request
-  else if (method === "PUT" && parsedUrl.pathname.startsWith("/api/items/")) {
+  // PUT request for items
+  if (method === "PUT" && parsedUrl.pathname.startsWith("/api/items/")) {
     let body = "";
     const itemId = parsedUrl.pathname.split("/").pop();
     req.on("data", (chunk) => {
@@ -51,27 +64,22 @@ const server = createServer((req, res) => {
         })
       );
     });
-    return; // Prevent further execution
+    return;
   }
 
-  //   DELETE Request
-  else if (
-    method === "DELETE" &&
-    parsedUrl.pathname.startsWith("/api/items/")
-  ) {
+  // DELETE request for items
+  if (method === "DELETE" && parsedUrl.pathname.startsWith("/api/items/")) {
     const itemId = parsedUrl.pathname.split("/").pop();
     res.statusCode = 200;
     res.end(
       JSON.stringify({ message: `DELETE request - Deleting item ${itemId}` })
     );
-    return; // Prevent further execution
+    return;
   }
 
-  //   Error Handled
-  else {
-    res.statusCode = 404;
-    res.end(JSON.stringify({ message: "Route not found" }));
-  }
+  // Error handling
+  res.statusCode = 404;
+  res.end(JSON.stringify({ message: "Route not found" }));
 });
 
 server.listen(PORT, () =>
