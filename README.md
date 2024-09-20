@@ -5,6 +5,8 @@ This is a simple HTTP server built using Node.js that handles basic CRUD operati
 ## Features
 
 - **GET** `/api/items`: Fetch all items.
+- **GET**  `/`: Welcome to the Home Page.
+- **GET**  `/about `: About Page.
 - **POST** `/api/items`: Add a new item.
 - **PUT** `/api/items/:id`: Update an existing item.
 - **DELETE** `/api/items/:id`: Delete an item.
